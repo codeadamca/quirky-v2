@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .flex-container
+    .row 
+      .flex-item
+        h1 Login
+        a(href='https://brickmmo.com')
+          img(src="/images/brickmmo.png" width="180" height="180")
+        form(action="/login" method="POST")
+          div
+            label(for="password") Password:
+            input#password(type="password" name="password" required)
+          div
+            button(type="submit") Login
+        include nav
+

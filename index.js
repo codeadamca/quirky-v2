@@ -5,20 +5,32 @@ require("dotenv").config();
 // **************************************************
 // Load models
 const Site = require("./models/site.model.js");
-const siteRoute = require("./routes/site.route.js");
+const apiRoutes = require("./routes/api.routes.js");
+const webRoutes = require("./routes/web.routes.js");
 
 // **************************************************
 // Require express for routing
 const express = require("express");
 const app = express();
 const path = require('path');
+const session = require('express-session');
+
+app.use(
+    session({
+      secret: '1234567890',
+      resave: false,
+      saveUninitialized: false,
+      cookie: { secure: false },
+    })
+  );
 
 app.set('view engine', 'pug');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.use("/api/sites", siteRoute);
+app.use("/api", apiRoutes);
+app.use('/', webRoutes);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -54,16 +66,5 @@ app.listen(process.env.PORT, () => {
     console.log("Server is running on port " + process.env.PORT);
 
 });
-
-// **************************************************
-// Add routes
-app.get("/", (req, res) => {
-
-    res.render('index', {
-        title: 'Home Page',
-      });
-
-});
-
 
 reload(app);
