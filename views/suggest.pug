@@ -30,60 +30,60 @@ block content
           button(type="button" id="another") Make Another Suggestion
         include nav
 
-script.
+  script.
 
-  const submit = document.getElementById('submit');
-  const another = document.getElementById('another');
-  const form = document.getElementById('form');
-  const message = document.getElementById('message');
+    const submit = document.getElementById('submit');
+    const another = document.getElementById('another');
+    const form = document.getElementById('form');
+    const message = document.getElementById('message');
 
-  form.style.display = "block";
-  message.style.display = "none";
+    form.style.display = "block";
+    message.style.display = "none";
 
-  another.addEventListener('click', () => {  
+    another.addEventListener('click', () => {  
 
-      form.style.display = "block";
-      message.style.display = "none";
+        form.style.display = "block";
+        message.style.display = "none";
 
-  });
+    });
 
-  submit.addEventListener('click', async () => {  
+    submit.addEventListener('click', async () => {  
 
-    const name = document.getElementById('name');
-    const url = document.getElementById('url');
-    const author = document.getElementById('author');
-    const github = document.getElementById('github');
-    const image = document.getElementById('image').files[0];
+      const name = document.getElementById('name');
+      const url = document.getElementById('url');
+      const author = document.getElementById('author');
+      const github = document.getElementById('github');
+      const image = document.getElementById('image').files[0];
 
-    const formData = new FormData();
-    formData.append('name', name.value);
-    formData.append('url', url.value);
-    formData.append('author', author.value);
-    formData.append('github', github.value);
-    formData.append('image', image);
+      const formData = new FormData();
+      formData.append('name', name.value);
+      formData.append('url', url.value);
+      formData.append('author', author.value);
+      formData.append('github', github.value);
+      formData.append('image', image);
 
-    try {
-      const response = await fetch('/api/sites', {
-        method: 'POST',
-        body: formData
-      });
+      try {
+        const response = await fetch('/api/sites', {
+          method: 'POST',
+          body: formData
+        });
 
-      const result = await response.json();
-      
-      if (response.status == 200) {
+        const result = await response.json();
+        
+        if (response.status == 200) {
 
-        form.style.display = "none";
-        message.style.display = "block";
+          form.style.display = "none";
+          message.style.display = "block";
 
-        name.value = "";
-        url.value = "";
-        author.value = "";
-        github.value = "";
+          name.value = "";
+          url.value = "";
+          author.value = "";
+          github.value = "";
 
-      } else {
-        error.innerHTML = "There was an error with your suggestion content";
+        } else {
+          error.innerHTML = "There was an error with your suggestion content";
+        }
+      } catch (err) {
+        error.innerHTML = "An error occurred while adding your suggestion";
       }
-    } catch (err) {
-      error.innerHTML = "An error occurred while adding your suggestion";
-    }
-  });
+    });

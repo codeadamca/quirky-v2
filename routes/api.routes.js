@@ -40,14 +40,8 @@ router.get("/sites/:id", async (req, res) => {
 });
 
 router.post("/sites/", upload.single('image'), async (req, res) => {
-
-  if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded!' });
-  }
-    
   try {
 
-    console.log(req.file.buffer);
     const site = new Site({
         name: req.body.name,
         url: req.body.url,
