@@ -4,3 +4,6 @@ nav
     li: a(href="/suggest") Suggest
     li: a(href="/list") List
     li: a(href="/manage") Manage
+    
+    if isAuthenticated
+      li: a(href="/logout") Logout

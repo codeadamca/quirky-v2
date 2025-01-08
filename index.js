@@ -15,23 +15,41 @@ const app = express();
 const path = require('path');
 const session = require('express-session');
 
+// **************************************************
+// Initialize session
 app.use(
     session({
-      secret: '1234567890',
+      secret: 'dh^R42*&^G',
       resave: false,
       saveUninitialized: false,
       cookie: { secure: false },
     })
   );
 
-app.set('view engine', 'pug');
+// **************************************************
+// Set a local variable storing logged in status
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isAuthenticated || false;
+  next();
+});
 
+// **************************************************
+// Set PUG as template engine
+app.set('view engine', 'pug');
+app.set('view cache', false); 
+
+// **************************************************
+// Set some default middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+// **************************************************
+// Set routes
 app.use("/api", apiRoutes);
 app.use('/', webRoutes);
 
+// **************************************************
+// Set the public path as a static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // **************************************************
@@ -61,7 +79,7 @@ mongoose.connect(uri)
 
 // **************************************************
 // Initializse app
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
 
     console.log("Server is running on port " + process.env.PORT);
 

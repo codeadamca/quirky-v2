@@ -1,12 +1,100 @@
 const express = require("express");
-const Site = require("../models/site.model.js");
 const router = express.Router();
-const {getSites, getSite, createSite, updateSite, deleteSite} = require('../controllers/site.controller.js');
 
-router.get('/sites/', getSites);
-router.get("/sites/:id", getSite);
-router.post("/sites/", createSite);
-router.put("/sites/:id", updateSite);
-router.delete("/sites/:id", deleteSite);
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const { Site, getRandomSite } = require("../models/site.model.js");
+
+router.get("/sites/random", async (req, res) => {
+  try {
+    const site = await getRandomSite();
+    if (site) {
+      res.json(site); 
+    } else {
+      res.status(404).json({ message: "No random site found" });
+    }
+  } catch (eerrorrr) {
+    res.status(500).json({ message: "Error fetching random site" });
+  }
+});
+
+router.get('/sites/', async (req, res) => {
+  try {
+    const sites = await Site.find({});
+    res.status(200).json(sites);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/sites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const site = await Site.findById(id);
+    res.status(200).json(site);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/sites/", upload.single('image'), async (req, res) => {
+
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded!' });
+  }
+    
+  try {
+
+    console.log(req.file.buffer);
+    const site = new Site({
+        name: req.body.name,
+        url: req.body.url,
+        author: req.body.author,
+        github: req.body.github,
+        image: req.file.buffer,
+        approved: false,
+    });
+    
+    await site.save();
+    
+    res.status(200).json(site);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/sites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const site = await Site.findByIdAndUpdate(id, req.body);
+  
+    if (!site) {
+      return res.status(404).json({ message: "Site not found" });
+    }
+  
+    const updatedSite = await Site.findById(id);
+    res.status(200).json(updatedSite);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.delete("/sites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+  
+    const site = await Site.findByIdAndDelete(id);
+  
+    if (!site) {
+      return res.status(404).json({ message: "Site not found" });
+    }
+  
+    res.status(200).json({ message: "Site deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

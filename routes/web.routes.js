@@ -49,12 +49,17 @@ router.post('/login', (req, res) => {
   const { password } = req.body;
 
   if (password === PASSWORD) {
-    // req.session.isAuthenticated = true;
-    // res.redirect('/manage');
-    res.status(401).send('Logged in!');
+    req.session.isAuthenticated = true;
+    res.redirect('/manage');
   } else {
-    res.status(401).send('Incorrect password');
+    res.redirect('/login');
   }
+});
+
+router.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
 });
 
 module.exports = router;
