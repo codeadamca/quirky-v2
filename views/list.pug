@@ -1,10 +1,42 @@
 extends layout
 
 block content
-  .flex-container
-    .row 
-      .flex-item
-        h1 List
-        a(href='https://brickmmo.com')
-          img(src="/images/brickmmo.png" width="180" height="180")
-        include nav
+  .container
+    h1 
+      a(href="/") Quirky List
+    include nav
+    div#list
+  
+  script.
+
+    (async function () {
+      
+      const response = await fetch('/api/sites', {
+        method: 'GET',
+      });
+
+      result = await response.json();
+     
+      const list = document.getElementById("list");
+
+      for(let i in result){
+
+        let {_id, name, url, author, github, image, approved} = result[i];
+
+        console.log(image);
+
+        list.innerHTML += "<div>" + 
+          "<a href=\"" + url + "\">" + 
+          "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" + 
+          "</a>" + 
+          "<p>" + 
+          "<a href=\"" + url + "\"><i class=\"fa-solid fa-link\"></i></a>" +
+          "<a href=\"" + github + "\"><i class=\"fa-brands fa-github\"></i></a>" +
+          "<br>" + name + 
+          "<br>" + author + 
+          "</p>" + 
+          "</div>";
+        
+      }
+
+    })();

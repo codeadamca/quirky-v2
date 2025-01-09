@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Luckiest+Guy&display=swap');
+
 html, body {
     height: 100%;
 }
 body {
     margin: 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Luckiest Guy";
+    background-color: #212529;
+    color: #fff;
+}
+
+.container {
+    padding-top: 50px;
+    text-align: center;
 }
 .flex-container {
     height: 100%;
@@ -16,4 +25,32 @@ body {
 }
 .flex-item {
     text-align: center;
+}
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+h1 {
+    font-size: 45px;
+    letter-spacing: 2px;
+}
+a.button:link,
+a.button:visited,
+a.button:active,
+a.button:hover {
+    color: #316cf4;
+}
+.button {
+    border: 1px solid #316cf4;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    font-family: "Luckiest Guy";
+    background-color: #212529;
+    padding: 15px 15px 5px;
+    font-size: 35px;
+    margin: 10px;
 }

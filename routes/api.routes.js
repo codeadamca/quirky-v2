@@ -20,6 +20,21 @@ router.get("/sites/random", async (req, res) => {
   }
 });
 
+router.get('/sites/:id/image', async (req, res) => {
+  try {
+      const site = await Site.findById(req.params.id);
+
+      if (!site || !site.image) {
+          return res.status(404).send('Image not found');
+      }
+
+      res.set('Content-Type', 'image/jpeg');
+      res.send(site.image);
+  } catch (err) {
+      res.status(500).send('Error retrieving image');
+  }
+});
+
 router.get('/sites/', async (req, res) => {
   try {
     const sites = await Site.find({});

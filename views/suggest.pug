@@ -4,7 +4,9 @@ block content
   .flex-container
     .row 
       .flex-item
-        h1 Suggest a Website
+        h1 
+          a(href="/") Suggest a Website
+        include nav
         div#form
           form(enctype="multipart/form-data")
             div#error
@@ -28,7 +30,6 @@ block content
         div#message
           h2 Suggestion Has Been Submitted
           button(type="button" id="another") Make Another Suggestion
-        include nav
 
   script.
 

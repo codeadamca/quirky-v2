@@ -1,9 +1,8 @@
 nav
   ul
-    li: a(href="/") Home
-    li: a(href="/suggest") Suggest
-    li: a(href="/list") List
-    li: a(href="/manage") Manage
+    a#get-one.button(href="/") Get One
+    a#show-all.button(href="/list") Show All 
+    a#show-all.button(href="/suggest") Suggest
     
     if isAuthenticated
       li: a(href="/logout") Logout
