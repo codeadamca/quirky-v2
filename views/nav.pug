@@ -1,8 +1,7 @@
 nav
-  ul
-    a#get-one.button(href="/") Get One
-    a#show-all.button(href="/list") Show All 
-    a#show-all.button(href="/suggest") Suggest
+  a#get-one.button(href="/") Get One
+  a#show-all.button(href="/list") Show All 
+  a#show-all.button(href="/suggest") Suggest
     
-    if isAuthenticated
-      li: a(href="/logout") Logout
+  if isAuthenticated
+    a#logout.button(href="/logout") Logout

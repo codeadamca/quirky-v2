@@ -7,24 +7,24 @@ const { PASSWORD, auth } = require('../middlewares/auth');
 router.get("/", (req, res) => {
 
   res.render('index', {
-      title: 'Home Page',
-    });
+    title: 'Home Page',
+  });
 
 });
 
 router.get("/suggest", (req, res) => {
 
   res.render('suggest', {
-      title: 'Suggest a Website',
-    });
+    title: 'Suggest a Website',
+  });
 
 });
 
 router.get("/list", (req, res) => {
 
   res.render('list', {
-      title: 'LIst of Quirky Websites',
-    });
+    title: 'List of Quirky Websites',
+  });
 
 });
 
