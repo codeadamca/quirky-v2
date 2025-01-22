@@ -1,4 +1,4 @@
-const PASSWORD = "quirky";
+const PASSWORD = process.env.QUIRKY_PASSWORD;
 
 const auth = (req, res, next) => {
   if (req.session && req.session.isAuthenticated) {
