@@ -65,7 +65,7 @@ mongoose.set("debug", true);
 const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + 
     ":" + process.env.MONGODB_PASSWORD + 
     "@" + process.env.MONGODB_CLUSTER + 
-    ".yx8at.mongodb.net/" + process.env.MONGODB_DATABASE + 
+    "." + process.env.MONGODB_SERVER + "/" + process.env.MONGODB_DATABASE + 
     "?retryWrites=true&w=majority&appName=" + process.env.MONGODB_APP;
 
 mongoose.connect(uri)
