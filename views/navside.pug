@@ -1,0 +1,11 @@
+navside
+    div#navside
+        button#hamburger &#9776;
+        div#menulinks
+            a#get-one2.button(href="/") Get One
+            a#show-all2.button(href="/list") Show All 
+            a#suggest2.button(href="/suggest") Suggest
+
+            if isAuthenticated
+                a#manage2.button(href="/manage") Manage
+                a#logout2.button(href="/logout") Logout

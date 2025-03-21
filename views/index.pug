@@ -2,8 +2,87 @@ extends layout
 
 block content
   .container
-    h1 
-      a(href="/") Quirky Web
-    include nav
-    h2 TODO: Random Website Displayed Here
+    .container-fluid-home
+      h1.main_head
+        a#home(href="/") The Quirky Web
+    //- h2 TODO: Random Website Displayed Here
+    div#random
+    p#loading Loading Website...
+    .container-nav
+      include nav
+
+  script.
+
+    (async function () {
+
+
+      const response = await fetch('/api/sites', {
+        method: 'GET',
+      });
+
+      result = await response.json();
+      //- console.log("result: " + result );
+      //- console.log("result: " + result.length );
+
+      const randomItem = result[Math.floor(Math.random() * result.length)];
+
+      console.log("randomItem: " + randomItem );
+
+      const list = document.getElementById("random");
+      const load = document.getElementById("loading");
+      const nav = document.getElementById("nav");
+      let datafound = false
+      //- console.log(list);
+      list.style.display = "none";
+      let {_id, name, url, author, github, image, approved} = randomItem;
+
+      if(approved){
+        datafound = true;
+        list.innerHTML += "<div class='random-box'>" +
+          "<a href=\"" + url + "\">" +
+          "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" +
+          "</a>" +
+          "<div class='site-box-info'>" +
+            "<p>" +
+              "<a class='name' href='" + url + "' target='_blank' title='name'> " + name + "</a>" +"</p>" +"<p>"+
+
+              "<a class='author' href='" + github + "' target='_blank' title='GitHub'>Github: " + author + "</a>" +
+
+
+            "</p>" +"</div>"+"</div>";
+      }
+
+
+      setTimeout(()=>{
+        if(datafound){
+          nav.style.marginTop = "20px";
+          nav.style.position = "revert";
+          load.style.display = "none";
+          list.style.display = "flex";
+        }else{
+          load.innerHTML = "Unable to fetch data, Please contact Admin"
+          console.log("ERROR: No Websites added OR Check Approvals");
+        }
+      },500)
+      //- for(let i in result){
+
+      //-   let {_id, name, url, author, github, image, approved} = result[i];
+
+
+      //-   list.innerHTML += "<div class='random-box'>" + 
+      //-     "<a href=\"" + url + "\">" + 
+      //-     "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" + 
+      //-     "</a>" + 
+      //-     "<p>" + 
+      //-     "<a href=\"" + url + "\"><i class=\"fa-solid fa-link\"></i></a>" +
+      //-     "<a href=\"" + github + "\"><i class=\"fa-brands fa-github\"></i></a>" +
+      //-     "<br>" + name + 
+      //-     "<br>" + author + 
+      //-     "</p>" + 
+      //-     "</div>";
+
+      //- }
+
+    })();
+
 

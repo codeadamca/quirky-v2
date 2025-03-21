@@ -1,15 +1,29 @@
 extends layout
 
 block content
-  .container
-    h1 
-      a(href="/") Quirky Web
-    include nav
-    h2 Console Login
+  .containerlogin
+    .container-fluid-login
+      h1 
+        a(href="/") The Quirky Web
+      include navside
+    h2#loginpage Console Login
     form(action="/login" method="POST")
       div
         label(for="password") Password:
-        input#password(type="password" name="password" required)
+        input#password(type="password" name="password" placeholder="Password!!!" required)
       div
         button(type="submit") Login
+  script.
+    const hamburger = document.getElementById("hamburger");
+    const menulinks = document.getElementById("menulinks");
+    const content = document.getElementById('loginpage');
+
+    hamburger.addEventListener("click", () => {
+      menulinks.classList.toggle("show");
+      if (menulinks.classList.contains('show')) {
+        content.style.marginTop = menulinks.offsetHeight +"px";
+      } else {
+        content.style.marginTop = '0';
+      } 
+    });
 
