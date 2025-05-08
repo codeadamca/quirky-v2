@@ -15,41 +15,36 @@ block content
 
     (async function () {
 
-
-      const response = await fetch('/api/sites', {
+      const response = await fetch('/api/sites/random', {
         method: 'GET',
       });
 
       result = await response.json();
-      //- console.log("result: " + result );
-      //- console.log("result: " + result.length );
 
-      const randomItem = result[Math.floor(Math.random() * result.length)];
-
-      console.log("randomItem: " + randomItem );
-
+      // const randomItem = result[Math.floor(Math.random() * result.length)];
+      const randomItem = result[0];
       const list = document.getElementById("random");
       const load = document.getElementById("loading");
       const nav = document.getElementById("nav");
       let datafound = false
-      //- console.log(list);
+
       list.style.display = "none";
       let {_id, name, url, author, github, image, approved} = randomItem;
 
       if(approved){
+
         datafound = true;
+
         list.innerHTML += "<div class='random-box'>" +
           "<a href=\"" + url + "\">" +
           "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" +
           "</a>" +
           "<div class='site-box-info'>" +
-            "<p>" +
-              "<a class='name' href='" + url + "' target='_blank' title='name'> " + name + "</a>" +"</p>" +"<p>"+
+          "<p>" +
+          "<a class='name' href='" + url + "' target='_blank' title='name'> " + name + "</a>" +"</p>" +"<p>"+
+          "<a class='author' href='" + github + "' target='_blank' title='GitHub'>Github: " + author + "</a>" +
+          "</p>" +"</div>"+"</div>";
 
-              "<a class='author' href='" + github + "' target='_blank' title='GitHub'>Github: " + author + "</a>" +
-
-
-            "</p>" +"</div>"+"</div>";
       }
 
 

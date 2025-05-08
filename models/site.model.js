@@ -35,13 +35,4 @@ const SiteSchema = mongoose.Schema(
 
 const Site = mongoose.model("Site", SiteSchema);
 
-async function getRandomSite() {
-  try { 
-    const randomSite = await Site.aggregate([{ $sample: { size: 1 } }]);
-    return randomSite[0];
-  } catch (error) {
-    console.error("Error fetching random site:", error);
-  }
-}
-
-module.exports = { Site, getRandomSite };
+module.exports = { Site };

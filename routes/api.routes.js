@@ -5,23 +5,35 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const { Site, getRandomSite } = require("../models/site.model.js");
+const { Site } = require("../models/site.model.js");
 
 router.get("/sites/random", async (req, res) => {
+
   try {
-    const site = await getRandomSite();
+
+    const site = await Site.aggregate([
+      { $match: { approved: true } },
+      { $sample: { size: 1 } }
+    ]);
+    
     if (site) {
       res.json(site); 
     } else {
       res.status(404).json({ message: "No random site found" });
     }
-  } catch (eerrorrr) {
+
+  } catch (error) {
+
     res.status(500).json({ message: "Error fetching random site" });
+
   }
+
 });
 
 router.get('/sites/:id/image', async (req, res) => {
+
   try {
+
       const site = await Site.findById(req.params.id);
 
       if (!site || !site.image) {
@@ -30,31 +42,48 @@ router.get('/sites/:id/image', async (req, res) => {
 
       res.set('Content-Type', 'image/jpeg');
       res.send(site.image);
+
   } catch (err) {
+
       res.status(500).send('Error retrieving image');
+
   }
+
 });
 
 router.get('/sites/', async (req, res) => {
+
   try {
+
     const sites = await Site.find({});
     res.status(200).json(sites);
+
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+
   }
+
 });
 
 router.get("/sites/:id", async (req, res) => {
+
   try {
+
     const { id } = req.params;
     const site = await Site.findById(id);
     res.status(200).json(site);
+
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+
   }
+
 });
 
 router.post("/sites/", upload.single('image'), async (req, res) => {
+
   try {
 
     const site = new Site({
@@ -69,13 +98,19 @@ router.post("/sites/", upload.single('image'), async (req, res) => {
     await site.save();
     
     res.status(200).json(site);
+
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+
   }
+
 });
 
 router.put("/sites/:id", async (req, res) => {
+
   try {
+
     const { id } = req.params;
     const site = await Site.findByIdAndUpdate(id, req.body);
   
@@ -85,13 +120,19 @@ router.put("/sites/:id", async (req, res) => {
   
     const updatedSite = await Site.findById(id);
     res.status(200).json(updatedSite);
+
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+
   }
+
 });
 
 router.delete("/sites/:id", async (req, res) => {
+
   try {
+
     const { id } = req.params;
   
     const site = await Site.findByIdAndDelete(id);
@@ -101,9 +142,13 @@ router.delete("/sites/:id", async (req, res) => {
     }
   
     res.status(200).json({ message: "Site deleted successfully" });
+
   } catch (error) {
+
     res.status(500).json({ message: error.message });
+
   }
+
 });
 
 module.exports = router;

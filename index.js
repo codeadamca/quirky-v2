@@ -69,8 +69,7 @@ const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME +
     "." + process.env.MONGODB_SERVER + "/" + process.env.MONGODB_DATABASE + 
     "?retryWrites=true&w=majority&appName=" + process.env.MONGODB_APP;
 
-
-    //const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.7aufk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.7aufk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(uri)
 .then(() => {
@@ -102,9 +101,6 @@ app.post("/manage/submit", async (request, response) => {
       response.status(500).send("Internal Server Error");
   }
 });
-
-
-
 
 // **************************************************
 // Initializse app
