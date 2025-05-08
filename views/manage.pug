@@ -1,9 +1,111 @@
 extends layout
 
 block content
-  .container
-    h1 
-      a(href="/") Quirky Web
-    include nav
-    h2 Manage Websites
-    h2 TODO: List All Websites
+  .container-manage 
+    .container-fluid-manage
+      h1 
+        a(href="/") The Quirky Web
+      include navside
+
+    //- h2 Manage Websites
+    //- h2 TODO: List All Websites
+    div#list
+
+
+
+    div#message
+
+
+  script.
+
+    const hamburger = document.getElementById("hamburger");
+    const menulinks = document.getElementById("menulinks");
+    const content = document.getElementById('list');
+
+    hamburger.addEventListener("click", () => {
+      menulinks.classList.toggle("show");
+      if (menulinks.classList.contains('show')) {
+        content.style.marginTop = menulinks.offsetHeight +"px";
+      } else {
+        content.style.marginTop = '0';
+      } 
+    });
+
+    (async function () {
+
+      const response = await fetch('/api/sites', {
+        method: 'GET',
+      });
+
+      result = await response.json();
+
+      const list = document.getElementById("list");
+
+      for(let i in result){
+
+        var {_id, name, url, author, github, image, approved} = result[i];
+
+        console.log(image);
+
+        //- list.innerHTML += "<div class='site-box'>" + 
+        //-   "<a href=\"" + url + "\">" + 
+        //-   "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" + 
+        //-   "</a>" + 
+        //-   "<p>" + 
+        //-   "<a href=\"" + url + "\"><i class=\"fa-solid fa-link\"></i></a>" +
+        //-   "<a href=\"" + github + "\"><i class=\"fa-brands fa-github\"></i></a>" +
+        //-   "<br>" + name + 
+        //-   "<br>" + author + 
+        //-   "</p>" + 
+        //-   "<div #approve> Approved=" + approved + "</div>" +
+        //-   "</div>";
+        list.innerHTML += "<div class='site-box'>" +
+          "<a href=\"" + url + "\">" +
+          "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" +
+          "</a>" +
+          "<div class='site-box-info'>" +
+            "<p>" +
+              "<a class='name' href='" + url + "' target='_blank' title='name'> " + name + "</a>" +"</p>" +"<p>"+
+
+              "<a class='author' href='" + github + "' target='_blank' title='GitHub'>Github: " + author + "</a>" +
+
+
+            "</p>" +
+          "<div #approve> Approved=" + approved + "</div>"  +
+          "<form action=\"manage/submit\" method=\"post\">" + 
+          "<input type=\"hidden\", name=\"webId\", value=" + _id + ">" +
+          "<input type=\"hidden\", name=\"webapprove\", value=" + approved + ">" +
+          "<button type=\"submit\" class='manage-btn approve-btn' data-id='" + _id + "'>Change Approve</button>" +
+          "</form>" + 
+          "<button class='manage-btn delete-btn' data-id='" + _id + "'>Delete</button>" +
+          "</div>"+"</div>";
+      }
+
+    })();
+    document.addEventListener("click", async function (e) {
+    if (e.target.classList.contains("delete-btn")) {
+      const idToDelete = e.target.getAttribute("data-id");
+
+      const confirmDelete = confirm("Are you sure you want to delete this site?");
+      if (confirmDelete) {
+        try {
+          const response = await fetch("/api/sites/" + idToDelete, {
+            method: "DELETE",
+          });
+
+          if (response.ok) {
+            alert("Site deleted successfully!");
+            e.target.closest(".site-box").remove();
+          } else {
+            alert("Failed to delete site.");
+          }
+            } catch (error) {
+              console.error("Error deleting site:", error);
+              alert("Error deleting site. Please try again.");
+            }
+        }
+          }
+      });
+
+
+

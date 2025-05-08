@@ -1,29 +1,31 @@
 extends layout
 
 block content
-  .container
-    h1 
-      a(href="/") Quirky Web
-    include nav
-    h2 Suggest a Website
+  .containersuggest
+    .container-fluid-suggest
+      h1 
+        a(href="/") The Quirky Web
+      include navside
+    h2#suggestform Suggest a Website
     div#form
       form(enctype="multipart/form-data")
         div#error
         div
           label(for="Name") Website Name:
-          input#name(type="text" name="name" required)
+          input#name(type="text" name="name" required placeholder="Website Name")
         div
           label(for="url") URL:
-          input#url(type="text" name="url" required)
+          input#url(type="text" name="url" required placeholder="Website URL")
         div
           label(for="author") Author:
-          input#author(type="text" name="author" required)
+          input#author(type="text" name="author" required placeholder="Author Name")
         div
           label(for="github") GitHub Repo URL:
-          input#github(type="text" name="github" required)
+          input#github(type="text" name="github" required placeholder="GitHub Repo URL")
         div
-          label(for="image") Image:
-          input#image(type="file" name="image" required)
+          label.custom-file-upload(for="file") Choose File
+          input#file(type="file" hidden)
+          div#file-name No file uploaded
         div
           button(type="button" id="submit") Suggest Website
     div#message
@@ -32,29 +34,63 @@ block content
 
   script.
 
+    const hamburger = document.getElementById("hamburger");
+    const menulinks = document.getElementById("menulinks");
+    const content = document.getElementById('suggestform');
+
+    hamburger.addEventListener("click", () => {
+      menulinks.classList.toggle("show");
+      if (menulinks.classList.contains('show')) {
+        content.style.marginTop = menulinks.offsetHeight +"px";
+      } else {
+        content.style.marginTop = '0';
+      } 
+    });
+
     const submit = document.getElementById('submit');
     const another = document.getElementById('another');
     const form = document.getElementById('form');
     const message = document.getElementById('message');
+    const error = document.getElementById('error'); // Corrected error reference
 
+    // File input name update
+    function updateFileName() {
+      const fileInput = document.getElementById('file');
+      const fileNameDisplay = document.getElementById('file-name');
+
+      if (fileInput.files.length > 0) {
+        fileNameDisplay.innerText = fileInput.files[0].name;
+      } else {
+        fileNameDisplay.innerText = 'No file uploaded';
+      }
+    }
+
+    // Show form and hide message initially
     form.style.display = "block";
     message.style.display = "none";
 
+    // Handle the "Make Another Suggestion" button click
     another.addEventListener('click', () => {  
-
-        form.style.display = "block";
-        message.style.display = "none";
-
+      form.style.display = "block";
+      message.style.display = "none";
     });
 
+    // Submit form data when the "Suggest Website" button is clicked
     submit.addEventListener('click', async () => {  
-
+      // Get form data
       const name = document.getElementById('name');
       const url = document.getElementById('url');
       const author = document.getElementById('author');
       const github = document.getElementById('github');
-      const image = document.getElementById('image').files[0];
+      const image = document.getElementById('file').files[0];
 
+      // Validate form inputs before submitting
+      if (!name.value || !url.value || !author.value || !github.value || !image) {
+        error.innerHTML = "All fields are required!";
+        return; // Exit function if validation fails
+      }
+
+      // Prepare FormData to send to the server
       const formData = new FormData();
       formData.append('name', name.value);
       formData.append('url', url.value);
@@ -63,27 +99,34 @@ block content
       formData.append('image', image);
 
       try {
+        // Send form data to the server
         const response = await fetch('/api/sites', {
           method: 'POST',
           body: formData
         });
 
+        // Parse the response
         const result = await response.json();
-        
-        if (response.status == 200) {
 
+        if (response.status === 200) {
+          // Hide form and show success message
           form.style.display = "none";
           message.style.display = "block";
 
+          // Clear form fields
           name.value = "";
           url.value = "";
           author.value = "";
           github.value = "";
-
         } else {
+          // Show error message if something went wrong on the server side
           error.innerHTML = "There was an error with your suggestion content";
         }
       } catch (err) {
+        // Show error message if an error occurred during fetch
         error.innerHTML = "An error occurred while adding your suggestion";
       }
     });
+
+    // Update file name display when a file is selected
+    document.getElementById('file').addEventListener('change', updateFileName);
