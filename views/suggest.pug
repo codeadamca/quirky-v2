@@ -22,10 +22,11 @@ block content
         div
           label(for="github") GitHub Repo URL:
           input#github(type="text" name="github" required placeholder="GitHub Repo URL")
-        div
+        div.center
           label.custom-file-upload(for="file") Choose File
           input#file(type="file" hidden)
           div#file-name No file uploaded
+          dif#fil-instructions 400 x 400
         div
           button(type="button" id="submit") Suggest Website
     div#message

@@ -51,12 +51,37 @@ router.get('/sites/:id/image', async (req, res) => {
 
 });
 
-router.get('/sites/', async (req, res) => {
+router.get('/sites', async (req, res) => {
 
   try {
 
     const sites = await Site.find({});
     res.status(200).json(sites);
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
+
+  }
+
+});
+
+router.post("/sites", upload.single('image'), async (req, res) => {
+
+  try {
+
+    const site = new Site({
+        name: req.body.name,
+        url: req.body.url,
+        author: req.body.author,
+        github: req.body.github,
+        image: req.file.buffer,
+        approved: false,
+    });
+    
+    await site.save();
+    
+    res.status(200).json(site);
 
   } catch (error) {
 
@@ -72,31 +97,6 @@ router.get("/sites/:id", async (req, res) => {
 
     const { id } = req.params;
     const site = await Site.findById(id);
-    res.status(200).json(site);
-
-  } catch (error) {
-
-    res.status(500).json({ message: error.message });
-
-  }
-
-});
-
-router.post("/sites/", upload.single('image'), async (req, res) => {
-
-  try {
-
-    const site = new Site({
-        name: req.body.name,
-        url: req.body.url,
-        author: req.body.author,
-        github: req.body.github,
-        image: req.file.buffer,
-        approved: false,
-    });
-    
-    await site.save();
-    
     res.status(200).json(site);
 
   } catch (error) {
