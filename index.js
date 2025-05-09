@@ -55,11 +55,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // **************************************************
 // Require reload for auto development updates
+/*
 let reload;
 if(process.env.NODE_ENV === 'development')
 {
   reload = require('reload');
 }
+*/
 
 // **************************************************
 // Connect to MongoDB database using Mongoose
@@ -114,7 +116,9 @@ const server = app.listen(process.env.PORT, () => {
 
 });
 
+/*
 if(process.env.NODE_ENV === 'development')
 {
   reload(app);
 }
+*/
