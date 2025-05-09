@@ -5,7 +5,6 @@ block content
     .container-fluid-home
       h1.main_head
         a#home(href="/") The Quirky Web
-    //- h2 TODO: Random Website Displayed Here
     div#random
     p#loading Loading Website...
     .container-nav
@@ -47,7 +46,6 @@ block content
 
       }
 
-
       setTimeout(()=>{
         if(datafound){
           nav.style.marginTop = "20px";
@@ -59,24 +57,6 @@ block content
           console.log("ERROR: No Websites added OR Check Approvals");
         }
       },500)
-      //- for(let i in result){
-
-      //-   let {_id, name, url, author, github, image, approved} = result[i];
-
-
-      //-   list.innerHTML += "<div class='random-box'>" + 
-      //-     "<a href=\"" + url + "\">" + 
-      //-     "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" + 
-      //-     "</a>" + 
-      //-     "<p>" + 
-      //-     "<a href=\"" + url + "\"><i class=\"fa-solid fa-link\"></i></a>" +
-      //-     "<a href=\"" + github + "\"><i class=\"fa-brands fa-github\"></i></a>" +
-      //-     "<br>" + name + 
-      //-     "<br>" + author + 
-      //-     "</p>" + 
-      //-     "</div>";
-
-      //- }
 
     })();
 

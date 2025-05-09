@@ -54,6 +54,7 @@ block content
         //-   "</p>" + 
         //-   "<div #approve> Approved=" + approved + "</div>" +
         //-   "</div>";
+        
         list.innerHTML += "<div class='site-box'>" +
           "<a href=\"" + url + "\">" +
           "<img src=\"/api/sites/" + _id + "/image\" width=\"200\">" +
@@ -61,10 +62,7 @@ block content
           "<div class='site-box-info'>" +
             "<p>" +
               "<a class='name' href='" + url + "' target='_blank' title='name'> " + name + "</a>" +"</p>" +"<p>"+
-
               "<a class='author' href='" + github + "' target='_blank' title='GitHub'>Github: " + author + "</a>" +
-
-
             "</p>" +
           "<div #approve> Approved=" + approved + "</div>"  +
           "<form action=\"manage/submit\" method=\"post\">" + 
